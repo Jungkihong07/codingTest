@@ -1,75 +1,53 @@
 # 그룹이 2개가 될때까지 1년 씩 지나가면서 얼음을 녹여본다.
 # 즉, 그룹을 세어보고, 얼음을 녹이고, 그룹을 세어보고 얼음을 녹이는 방식으로 이루어져야 함.
-
-import sys
 from collections import deque
-import time
 
-input = sys.stdin.readline
-n,m = map(int, input().split()) 
 
-ice= []
+n, m = map(int,input().split())
 
-for _ in range(n):
-    ice.append(list(map(int,input().split())))
-
+ice = [list(map(int,input().split())) for _ in range(n)]
 
 # 상하좌우
-dx =[-1,1,0,0]
-dy = [0,0,-1,1] 
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
 
 
-def count_group(x,y):
+def bfs(a,b):
     q = deque()
-    q.append([x,y])
-    count_iceberg[y][x] = 1
+    q.append([a,b])
+    visited[b][a] = 1
+    sea_list = []
     while q:
-        a,b = q.popleft()
+        sea = 0
+        rx,ry = q.popleft()
         for i in range(4):
-            nx = a + dx[i]
-            ny = b + dy[i]
+            nx = rx + dx[i]
+            ny = ry + dy[i]
             if 0 <= nx < m and 0 <= ny < n:
-                if ice[ny][nx] == 0:
-                    count_iceberg[b][a] += 1
-                elif ice[ny][nx] and count_iceberg[ny][nx] == 0:
-                    count_iceberg[ny][nx] += 1
+                if not ice[ny][nx]:
+                    sea += 1
+                elif ice[ny][nx] and not visited[ny][nx]:
+                    visited[ny][nx] = 1
                     q.append([nx,ny])
+        if sea > 0:
+            sea_list.append((rx,ry,sea))
+    for x,y,sea in sea_list:
+        ice[y][x] = max(0, ice[y][x] - sea)
 
-
-cnt = 0
+year = 0
 
 while True:
-    # 빙하 주변의 바다를 세는 리스트
-    count_iceberg = [[0]*m for _ in range(n)]
-    # 빙하의 그룹 세는 변수
-    cnt_group = 0
-
-    # 먼저 바다의 그룹을 먼저 셈.
+    visited = [[0]*m for _ in range(n)]
+    group = 0
     for x in range(m):
         for y in range(n):
-            if count_iceberg[y][x] ==0 and ice[y][x]:
-                count_group(x,y)
-                cnt_group += 1
-
-    if cnt_group >=2:
-        print(cnt)
+            if not visited[y][x] and ice[y][x]:
+                bfs(x,y)
+                group += 1
+    if group > 1:
+        print(year)
         break
-    elif cnt_group == 0:
+    elif not group:
         print(0)
         break
-
-
-    # 빙하 녹이기
-    for x in range(m):
-        for y in range(n):
-            if count_iceberg[y][x]:
-                ice[y][x] -= (count_iceberg[y][x]-1)
-                if ice[y][x] < 0:
-                    ice[y][x] =0
-
-
-
-
-    cnt += 1
-    
-    
+    year += 1
