@@ -7,32 +7,29 @@ tc = int(input())
 INF= int(1e9)
 
 def solve():
-    for a in range(1, n+1):
-        for start in range(1, n+1):
-            for end in range(1, n+1):
-                graph[start][end] = min(graph[start][end], graph[start][a]+ graph[a][end])
-                if  (graph[start][end] + graph[end][start]) < 0:
+    for node in range(n):
+        for cur,next_node,cost in line:
+            if graph[next_node] > graph[cur] + cost:
+                graph[next_node] = graph[cur] + cost
+                if node == n-1:
                     return True
-    return False
+    return False 
+result =[]
 
-result = []
 for _ in range(tc):
     n,m,w = map(int,input().split())
-    graph =[[INF]*(n+1) for _ in range(n+1)]
+    line = []
+    graph =[INF] *(n+1)
     for _ in range(m):
         s,e,t = map(int,input().split())
-        graph[s][e] = t
-        graph[e][s] = t
-    for i in range(1,n+1):
-        graph[i][i] = 0
+        line.append((s,e,t))
+        line.append((e,s,t))
     for _ in range(w):
         s,e,t = map(int,input().split())
-        if graph[s][e] == INF:
-            graph[s][e] = -t
-        else:
-            graph[s][e] -= t
-    result.append(solve())
+        line.append((s,e,-t))
+    
+    go = solve(1)
+    result.append(go)
 
-for a in result:
-    print("YES" if a else "NO")  
-
+for i in result:
+    print("YES" if i else "NO")
