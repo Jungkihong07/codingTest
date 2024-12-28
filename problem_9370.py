@@ -2,6 +2,7 @@ import heapq
 import sys
 input = sys.stdin.readline
 INF =int(1e9)
+
 def dijkstra(start):
     distance[start][0] =0
     q =[]
@@ -14,9 +15,11 @@ def dijkstra(start):
             cost = dist + i[1]
             if distance[i[0]][0] >= cost:
                 distance[i[0]][0] = cost
-                if i[2] or bool:
+                if i[2]:
                     distance[i[0]][1] = True
                     bool = True
+                if bool:
+                    distance[i[0]][1] = True
                 heapq.heappush(q,(cost,i[0],bool))
 
 
@@ -25,7 +28,7 @@ T = int(input())
 result = [[] for _ in range(T)]
 
 for c in range(T):
-    n,m,t = map(int,input().split())    
+    n,m,t = map(int,input().split())
     s,g,h = map(int,input().split())
     array = [[] for _ in range(n+1)]
     distance =[[INF,False] for _ in range(n+1)]
