@@ -1,50 +1,48 @@
-def move(person, y, x):
-    opened = [[False] * n for _ in range(n)]
-    cnt = 0
-    stack = [(y, x)]
-    total = 0
-    while stack:
-        y, x = stack.pop()
-        opened[y][x] = True
-        cnt += 1
-        total += person[y][x]
-        for d in range(4):
-            ax = x + dx[d]
-            ay = y + dy[d]
-            if 0 <= ax < n and 0 <= ay < n and not opened[ay][ax]:
-                if l <= abs(person[y][x] - person[ay][ax]) <= r:
-                    stack.append((ay, ax))
+from collections import deque
 
-    popular = int(total / cnt)
-    for row in range(n):
-        for col in range(n):
-            if opened[row][col]:
-                person[row][col] = popular
+dr = [1, -1, 0, 0]
+dc = [0, 0, 1, -1]
+
+
+def move(visited, c_row, c_col):
+    q = deque([(c_row, c_col)])
+    visited[c_row][c_col] = True
+    union = [(c_row, c_col)]
+    total = 0
+    while q:
+        row, col = q.popleft()
+        total += people[row][col]
+        for d in range(4):
+            d_row = row + dr[d]
+            d_col = col + dc[d]
+            if 0 <= d_row < n and 0 <= d_col < n:
+                if not visited[d_row][d_col]:
+                    if l <= abs(people[row][col] - people[d_row][d_col]) <= r:
+                        q.append((d_row, d_col))
+                        visited[d_row][d_col] = True
+                        union.append((d_row, d_col))
+    result_people = total // len(union)
+    if len(union) > 1:
+        for row, col in union:
+            people[row][col] = result_people
+        return True
+    return False
 
 
 n, l, r = map(int, input().split())
-person = [list(map(int, input().split())) for _ in range(n)]
-dx = [1, 0, -1, 0]
-dy = [0, -1, 0, 1]
+people = [list(map(int, input().split())) for _ in range(n)]
 
 day = 0
+
 while 1:
-    day += 1
-    moved = True
+    moved = False
+    visited = [[False] * n for _ in range(n)]
     for row in range(n):
         for col in range(n):
-            is_opened = False
-            for d in range(4):
-                ar = row + dy[d]
-                ac = col + dx[d]
-                if 0 <= ar < n and 0 <= ac < n:
-                    if l <= abs(person[row][col] - person[ar][ac]) <= r:
-                        is_opened = True
-                        break
-            if is_opened:
-                moved = True
-                move(person, row, col)
+            if not visited[row][col]:
+                if move(visited, row, col):
+                    moved = True
     if not moved:
         break
-    
+    day += 1
 print(day)
