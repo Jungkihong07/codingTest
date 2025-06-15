@@ -1,3 +1,6 @@
+# Test file
+*.txt
+
 # Python Bytecode
 __pycache__/
 *.py[cod]

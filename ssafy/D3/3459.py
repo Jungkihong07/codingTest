@@ -1,3 +1,5 @@
+# 문제 해결 못함. 나중에 풀어보기
+
 import sys
 
 sys.stdin = open("sample_input.txt", 'r')
