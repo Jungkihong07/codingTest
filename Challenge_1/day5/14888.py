@@ -1,3 +1,5 @@
+# 해당 방식은 dfs로도 더 잘 풀림. 해당 방법을 고려해보자.
+
 from itertools import permutations
 import math
 
