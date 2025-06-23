@@ -1,3 +1,5 @@
+# 코드 개선 점 많음. 다시 리팩토링 해보기
+
 n, k = map(int, input().split())
 
 order_item = list(map(int, input().split()))
