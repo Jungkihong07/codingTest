@@ -10,6 +10,8 @@ for i in range(len(order_item)):
     if len(used) < n:
         used.add(order_item[i])
         idx = i
+    else:
+        break
 #  바꿔야 하는 갯수
 cnt = 0
 idx += 1
@@ -18,16 +20,15 @@ while idx < len(order_item):
         idx += 1
         continue
     else:
-        if idx + n <= len(order_item):
-            next_item = set(order_item[idx : idx + n])
-            delete_item = used - next_item
-            used = next_item
-            cnt += len(delete_item)
-            idx += n
-        else:
-            next_item = set(order_item[idx:])
-            update_item = next_item - used
-            cnt += len(update_item)
-            break
+        remove_item = set()
+        i = 0
+        while not remove_item and k - i >= idx:
+            next_item = set(order_item[idx : k - i])
+            remove_item = used - next_item
+            i += 1
+        used.remove(remove_item.pop())
+        cnt += 1
+        used.add(order_item[idx])
+        idx += 1
 
 print(cnt)
