@@ -1,3 +1,4 @@
+# 시간 결과 2756 ms 걸림.
 import sys
 import heapq
 
