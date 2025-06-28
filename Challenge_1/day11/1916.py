@@ -10,14 +10,15 @@ weigth_board = [
 ]
 for _ in range(m):
     start, end, weight = map(int, input().split())
-    weigth_board[start][end] = weight
+    weigth_board[start][end] = min(weigth_board[start][end], weight)
 start, end = map(int, input().split())
 
 q = deque()
 q.append(start)
 start_board = [sys.maxsize] * (n + 1)
 visited = [False] * (n + 1)
-visited[start] = 0
+visited[start] = True
+start_board[start] = 0
 
 while q:
     next_node = q.popleft()
