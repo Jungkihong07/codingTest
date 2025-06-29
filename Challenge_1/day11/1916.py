@@ -7,7 +7,7 @@ n = int(input())  # 도시의 갯수
 m = int(input())  # 간선의 갯수
 weigth_board = [
     [0 if i == j else sys.maxsize for i in range(n + 1)] for j in range(n + 1)
-]  # 도시 별 이동 가중치 기록
+]  # 도시 별 이동 가중치 기록 (해당 부분은 n^2의 시간이 걸림.)
 
 # 도시 별 이동 가중치 기록 2
 for _ in range(m):

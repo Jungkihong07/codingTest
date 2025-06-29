@@ -5,7 +5,6 @@ INF = sys.maxsize
 n = int(input())
 m = int(input())
 
-
 edges = []
 
 for _ in range(m):
