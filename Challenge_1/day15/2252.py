@@ -1,3 +1,4 @@
+# defaultdict과 위상 정렬 , Kahn 알고리즘 활용(bfs 활용 방식)
 from collections import deque, defaultdict
 
 n, m = map(int, input().split())
